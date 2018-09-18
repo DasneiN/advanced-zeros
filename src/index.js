@@ -2,7 +2,6 @@ module.exports = function getZerosCount(number, base) {
 
   let result = 0, //  Количество нулей
     base_temp = base,
-    // simpleDigits = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113],
     simpleDigits = [],  //  Простые числа <= base
     dividers = new Map(); //  Простые делители числа
 
@@ -20,8 +19,6 @@ module.exports = function getZerosCount(number, base) {
       simpleDigits.push(i);
     }
   }
-  // console.log(simpleDigits);
-  
     
   // Раскладываем систему счисления на простые множители
   while (base_temp > 1) {
@@ -70,12 +67,7 @@ module.exports = function getZerosCount(number, base) {
       result = z / value;
     }
     
-  });
-  
-  // console.log(number);
-  // console.log(dividers);
-  // console.log(result);
-  
+  });  
 
   return Math.floor(result);
   
