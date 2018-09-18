@@ -2,12 +2,27 @@ module.exports = function getZerosCount(number, base) {
 
   let result = 0, //  Количество нулей
     base_temp = base,
-    simpleDigits = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113],
-    dividers = new Map(), //  Простые делители
-    divider,  //  Наименьше встречающийся делитель
-    divider_degree, //  Количество раз, сколько встречается делитель
-    divider_zeros = 0;  //  Количество нулей в этом делителе
+    // simpleDigits = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113],
+    simpleDigits = [],  //  Простые числа <= base
+    dividers = new Map(); //  Простые делители числа
 
+  //  Находим простые числа от 2 до числа base
+  for (let i = 2; i <= base; i++) {
+    let isSimple = true;
+
+    for (let j = 2; j < i; j++) {
+      if (i % j == 0) {
+        isSimple = false;
+      }
+    }
+
+    if (isSimple) {
+      simpleDigits.push(i);
+    }
+  }
+  // console.log(simpleDigits);
+  
+    
   // Раскладываем систему счисления на простые множители
   while (base_temp > 1) {
     
@@ -28,49 +43,40 @@ module.exports = function getZerosCount(number, base) {
     
   }
 
-  console.log(number);
-  console.log(dividers);
-
-  console.log('test1');
-  
-  dividers.forEach( (value, key, map) => {
-
-    console.log('1');
-    
-    let t = 0,
-      base_temp = key;
-    console.log('2');
+  function getZerosCount(number, n) {
+    let result = 0,
+      m = n;
 
     while (true) {
-      
-      let x = Math.floor(number / base_temp);
+      let x = Math.floor(number / m);
 
-      if (x =! 0) {
-        t += x;
-        base_temp *= key;
+      if (x == 0) {
+        return result;
       } else {
-        break;
+        result += x;
+        m *= n;
       }
 
     }
-    console.log('3');
+  }
 
-    if (t < divider_zeros || divider_zeros == 0) {
-      divider_zeros = t;
-      divider = key;
-      divider_degree = value;
+  dividers.forEach( (value, key, map) => {
+
+    let z = getZerosCount(number, key);
+
+    if ( (result != 0) && (z / value < result) ) {
+      result = z / value;
+    } else if (result == 0) {
+      result = z / value;
     }
-
-    console.log('4');
     
   });
   
-  console.log('test2');
+  // console.log(number);
+  // console.log(dividers);
+  // console.log(result);
   
 
-  console.log(divider + '/' +divider_degree+'/' +divider_zeros);
-  
-  
-  return ( divider_zeros / divider_degree );
+  return Math.floor(result);
   
 }
